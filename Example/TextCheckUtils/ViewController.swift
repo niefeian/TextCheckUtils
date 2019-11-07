@@ -20,6 +20,7 @@ class ViewController: UIViewController {
         vo.tipMaxCount = "字数不可以超过5个字"
         vo.replaceType = .中文
         vo.tipReplace = "只允许输入中文"
+        vo.tag = "109"
         ReplaceUtils.addObserverTextField(vo)
         // Do any additional setup after loading the view, typically from a nib.
     }

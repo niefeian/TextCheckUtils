@@ -14,7 +14,7 @@ public enum ReplaceType : String{
 public class ReplaceModel : NSObject{
     public var replaceType : ReplaceType!
     public weak var textField : UITextField!
-    @objc public var tag = 0
+    @objc public var tag : String = ""
     @objc public var maxCount = 10
     @objc public var minCount = 0
     @objc public  var tipMaxCount = ""
@@ -30,7 +30,7 @@ open class ReplaceUtils: NSObject {
            return instance!
     }
     
-    private var replaceModels = [ReplaceModel]()
+    private var replaceModels = [String : ReplaceModel]()
     
     public func pregReplace(string : String , pattern: String, with: String,
                      options: NSRegularExpression.Options = [])->String{
@@ -49,7 +49,7 @@ open class ReplaceUtils: NSObject {
                                                            selector: #selector(self.textFieldChanged),
                                                            name:UITextField.textDidChangeNotification,
                                                            object: textVo.textField)
-        replaceModels.append(textVo)
+        replaceModels[textVo.tag] = textVo
     }
     public class func removeObserverTextField(_ textField : UITextField){
            self.sharedInstance().removeObserverTextField(textField)
@@ -57,24 +57,21 @@ open class ReplaceUtils: NSObject {
     
    public func removeObserverTextField(_ textField : UITextField) {
         NotificationCenter.default.removeObserver(self, name: UITextField.textDidChangeNotification, object: textField)
-        for (index,textFieldVO) in replaceModels.enumerated(){
-            if textFieldVO.textField?.tag == textField.tag {
-                replaceModels.remove(at: index)
+        for key in replaceModels.keys{
+            if replaceModels[key]?.textField.tag == textField.tag {
+                replaceModels.removeValue(forKey: key)
                 return
             }
         }
     }
-    public class func removeObserverTextField(_ tag : Int){
-              self.sharedInstance().removeObserverTextField(tag)
-       }
+    public class func removeObserverTextField(_ tag : String){
+            self.sharedInstance().removeObserverTextField(tag)
+    }
     
-    public func removeObserverTextField(_ tag : Int) {
-        for (index,textFieldVO) in replaceModels.enumerated(){
-            if textFieldVO.tag == tag {
-                NotificationCenter.default.removeObserver(self, name: UITextField.textDidChangeNotification, object: textFieldVO.textField)
-                replaceModels.remove(at: index)
-                return
-            }
+    public func removeObserverTextField(_ tag : String) {
+        if let vo = replaceModels[tag] {
+            NotificationCenter.default.removeObserver(self, name: UITextField.textDidChangeNotification, object: vo.textField)
+            replaceModels.removeValue(forKey: tag)
         }
     }
     
@@ -88,34 +85,40 @@ open class ReplaceUtils: NSObject {
     }
     
     @objc func textFieldChanged(_ obj: Notification){
-        if let textField = obj.object as? UITextField {
+        if let textField = obj.object as? UITextField  {
+           
         guard let _: UITextRange = textField.markedTextRange else{
                        //当前光标的位置（后面会对其做修改）
+                var textFieldVo : ReplaceModel!
+                for key in replaceModels.keys{
+                    if replaceModels[key]?.textField.tag == textField.tag {
+                        textFieldVo = replaceModels[key]
+                    }
+                }
+                if textFieldVo == nil {
+                    return
+                }
+            
                let cursorPostion = textField.offset(from: textField.endOfDocument,
                to: textField.selectedTextRange!.end)
           
-            for (_,textFieldVO) in replaceModels.enumerated(){
-                       if textFieldVO.textField.tag == textField.tag {
-                       var str = pregReplace(string: textField.text ?? "", pattern: textFieldVO.replaceType!.rawValue, with: "")
-                        if str.count < textField.text?.count ?? 0 {
-                            showTipsWindow(textFieldVO.tipReplace, delayTime: 2)
-                        }
-                        if textFieldVO.maxCount > 0 && str.count > textFieldVO.maxCount {
-                            str = String(str.prefix(textFieldVO.maxCount))
-                             showTipsWindow(textFieldVO.tipMaxCount, delayTime: 2)
-                        }else if str.count < textFieldVO.minCount {
-                             showTipsWindow(textFieldVO.tipMinCount, delayTime: 2)
-                        }
-                        textField.text = str
-                        //让光标停留在正确位置
-                         let targetPostion = textField.position(from: textField.endOfDocument,
-                         offset: cursorPostion)!
-                         textField.selectedTextRange = textField.textRange(from: targetPostion,
-                         to: targetPostion)
-                        
-                        return
-                       }
+               var str = pregReplace(string: textField.text ?? "", pattern: textFieldVo.replaceType!.rawValue, with: "")
+                if str.count < textField.text?.count ?? 0 {
+                    showTipsWindow(textFieldVo.tipReplace, delayTime: 2)
                 }
+                if textFieldVo.maxCount > 0 && str.count > textFieldVo.maxCount {
+                    str = String(str.prefix(textFieldVo.maxCount))
+                     showTipsWindow(textFieldVo.tipMaxCount, delayTime: 2)
+                }else if str.count < textFieldVo.minCount {
+                     showTipsWindow(textFieldVo.tipMinCount, delayTime: 2)
+                }
+                textField.text = str
+                //让光标停留在正确位置
+                 let targetPostion = textField.position(from: textField.endOfDocument,
+                 offset: cursorPostion)!
+                 textField.selectedTextRange = textField.textRange(from: targetPostion,
+                 to: targetPostion)
+                     
             return
            }
        }

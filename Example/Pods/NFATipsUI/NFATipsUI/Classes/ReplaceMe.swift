@@ -6,7 +6,7 @@ public extension NSObject{
             if tip == "生日" {
                 showTipsWindow("出生日期" + "不能为空", delayTime: 4)
             }else{
-
+                showTipsWindow(tip, delayTime: 4)
             }
             return true
         }
