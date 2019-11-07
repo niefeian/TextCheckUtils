@@ -20,6 +20,20 @@ public class ReplaceModel : NSObject{
     @objc public  var tipMaxCount = ""
     @objc public  var tipMinCount = ""
     @objc public  var tipReplace = ""
+    
+    public func cReplaceModel(_ textField:UITextField ,replaceType:ReplaceType,tag:String,maxCount:Int = 10 , minCount : Int = 0 , tipReplace : String , tipMaxCount : String = "字数超出限制" , tipMinCount : String = "") -> ReplaceModel{
+        let vo = ReplaceModel()
+        vo.textField = textField
+        vo.replaceType = replaceType
+        vo.tag = tag
+        vo.maxCount = maxCount
+        vo.minCount = minCount
+        vo.tipReplace = tipReplace
+        vo.tag = tag
+        vo.tipMaxCount = tipMaxCount
+        vo.tipMinCount = tipMinCount
+        return vo
+    }
 }
 
 @objc(ReplaceUtils)
