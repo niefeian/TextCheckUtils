@@ -1,0 +1,6 @@
+framework module TextCheckUtils {
+  umbrella header "TextCheckUtils-umbrella.h"
+
+  export *
+  module * { export * }
+}

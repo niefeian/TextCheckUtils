@@ -1,0 +1,6 @@
+framework module NFATipsUI {
+  umbrella header "NFATipsUI-umbrella.h"
+
+  export *
+  module * { export * }
+}
