@@ -8,7 +8,7 @@
 import UIKit
 import NFATipsUI
 public enum ReplaceType : String{
-    case 中文 = "[^\\u4E00-\\u9FA5]",英文 = "[^A-Za-z]",数字 = "[^0-9]",中文或英文="[^A-Za-z\\u4E00-\\u9FA5]",英文或数字="[^A-Za-z0-9]"
+    case 中文 = "[^\\u4E00-\\u9FA5]",英文 = "[^A-Za-z]",数字 = "[^0-9]",中文或英文="[^A-Za-z\\u4E00-\\u9FA5]",英文或数字="[^A-Za-z0-9]",不校验=""
 }
 @objc(ReplaceModel)
 public class ReplaceModel : NSObject{
@@ -21,7 +21,7 @@ public class ReplaceModel : NSObject{
     @objc public  var tipMinCount = ""
     @objc public  var tipReplace = ""
     
-    public func cReplaceModel(_ textField:UITextField ,replaceType:ReplaceType,tag:String,maxCount:Int = 10 , minCount : Int = 0 , tipReplace : String , tipMaxCount : String = "字数超出限制" , tipMinCount : String = "") -> ReplaceModel{
+    public class func cReplaceModel(_ textField:UITextField ,replaceType:ReplaceType,tag:String,maxCount:Int = 10 , minCount : Int = 0 , tipReplace : String , tipMaxCount : String = "字数超出限制" , tipMinCount : String = "") -> ReplaceModel{
         let vo = ReplaceModel()
         vo.textField = textField
         vo.replaceType = replaceType
@@ -48,6 +48,10 @@ open class ReplaceUtils: NSObject {
     
     public func pregReplace(string : String , pattern: String, with: String,
                      options: NSRegularExpression.Options = [])->String{
+        if pattern == "" {
+            return string
+        }
+        
         let regex = try! NSRegularExpression(pattern: pattern, options: options)
         return regex.stringByReplacingMatches(in: string, options: [],
                                                     range: NSMakeRange(0, string.count),
@@ -105,7 +109,7 @@ open class ReplaceUtils: NSObject {
                        //当前光标的位置（后面会对其做修改）
                 var textFieldVo : ReplaceModel!
                 for key in replaceModels.keys{
-                    if replaceModels[key]?.textField.tag == textField.tag {
+                    if replaceModels[key]?.textField?.tag == textField.tag {
                         textFieldVo = replaceModels[key]
                     }
                 }

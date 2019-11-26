@@ -1,6 +1,6 @@
 {
   "name": "TextCheckUtils",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "summary": "A short description of TextCheckUtils.",
   "description": "TODO: Add long description of the pod here.",
   "homepage": "https://github.com/niefeian/TextCheckUtils",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/niefeian/TextCheckUtils.git",
-    "tag": "0.0.1"
+    "tag": "0.0.4"
   },
   "platforms": {
     "ios": "8.0"

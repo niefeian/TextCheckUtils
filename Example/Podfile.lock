@@ -14,7 +14,7 @@ PODS:
     - FBSnapshotTestCase (~> 2.0)
     - Nimble (~> 7.0)
   - Quick (1.2.0)
-  - TextCheckUtils (0.0.1):
+  - TextCheckUtils (0.0.4):
     - NFATipsUI
 
 DEPENDENCIES:
@@ -45,7 +45,7 @@ SPEC CHECKSUMS:
   Nimble: 051e3d8912d40138fa5591c78594f95fb172af37
   Nimble-Snapshots: f5459b5b091678dc942d03ec4741cacb58ba4a52
   Quick: 58d203b1c5e27fff7229c4c1ae445ad7069a7a08
-  TextCheckUtils: dc6c62700a7c448064373f78bf52802b9aff3287
+  TextCheckUtils: 034f51deee3ce649c6c26d4c59bb4918e2f1e93e
 
 PODFILE CHECKSUM: c2ef7d366a5122224622da52563a4a636a30ee6f
 
