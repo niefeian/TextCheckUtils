@@ -1,9 +1,9 @@
 {
-  "name": "TextCheckUtils",
-  "version": "0.0.4",
-  "summary": "A short description of TextCheckUtils.",
+  "name": "NFATipsUI",
+  "version": "0.1.0",
+  "summary": "提示框测试",
   "description": "TODO: Add long description of the pod here.",
-  "homepage": "https://github.com/niefeian/TextCheckUtils",
+  "homepage": "https://github.com/niefeian/NFATipsUI",
   "license": {
     "type": "MIT",
     "file": "LICENSE"
@@ -12,18 +12,15 @@
     "335074307@qq.com": "872447993@qq.com"
   },
   "source": {
-    "git": "https://github.com/niefeian/TextCheckUtils.git",
-    "tag": "0.0.4"
+    "git": "https://github.com/niefeian/NFATipsUI.git",
+    "tag": "0.1.0"
   },
   "platforms": {
     "ios": "8.0"
   },
-  "source_files": "TextCheckUtils/Classes/**/*",
+  "source_files": "NFATipsUI/Classes/*",
   "swift_versions": "5.0",
   "dependencies": {
-    "NFATipsUI": [
-
-    ],
     "NFAToolkit": [
 
     ]
